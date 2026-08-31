@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<title>CineForge AI Web App</title>
+<link href='https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap' rel='stylesheet'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'>
+<link rel='stylesheet' href='style.css?v=2'>
+</head>
+<body>
+
+<div id='login-view'>
+  <div class='login-card'>
+    <h1>CINEFORGE AI</h1>
+    <p>Sign in to access your workspace.</p>
+    <input type='email' placeholder='Work Email' class='input-field' />
+    <input type='password' placeholder='Password' class='input-field' />
+    <button class='action-btn' id='login-btn'>SIGN IN</button>
+    <button class='action-btn' id='guest-btn' style='margin-top: 1rem; background: transparent; border: 1px solid var(--border); color: var(--text-muted);'>CONTINUE AS GUEST</button>
+  </div>
+</div>
+
+<div id='app-view' style='display: none;'>
+  <aside class='sidebar'>
+    <div class='brand'>CINEFORGE</div>
+    <nav id='sidebar-nav'>
+      <a href='#' class='active' data-target='dashboard'><i class='fa-solid fa-plus'></i> New Campaign</a>
+      <a href='#' data-target='coming-soon'><i class='fa-solid fa-folder-open'></i> Projects</a>
+      <a href='#' data-target='coming-soon'><i class='fa-solid fa-gear'></i> Settings</a>
+      <a href='#' data-target='coming-soon'><i class='fa-solid fa-credit-card'></i> Billing</a>
+    </nav>
+    <div class='user-profile' style='flex-direction: column; align-items: flex-start; gap: 1.5rem;'>
+      <div style='display: flex; align-items: center; gap: 1rem;'>
+        <div class='avatar'>D</div>
+        <span>Director</span>
+      </div>
+      <button class='action-btn' id='signout-btn' style='padding: 0.5rem 1rem; font-size: 0.75rem; width: 100%; border: 1px solid var(--border); background: transparent; color: var(--text-muted);'>SIGN OUT</button>
+    </div>
+  </aside>
+  
+  <main class='main-content'>
+    <div id='dashboard' class='view-content'>
+      <header>
+        <h2>Create Campaign</h2>
+      </header>
+      
+      <div class='app-grid'>
+        <div class='input-section'>
+          <label>Movie Script / Plot Summary</label>
+          <textarea id='script-input' placeholder='FADE IN:...'></textarea>
+          <div id='auto-gen-container' style='display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;'>
+            <p style='font-size: 0.85rem; color: var(--text-muted); margin: 0; max-width: 65%;'>Stuck on ideas? Let CineForge AI write a blockbuster concept for you instantly.</p>
+            <button class='action-btn' id='auto-gen-btn' style='padding: 0.5rem 1rem; font-size: 0.8rem; width: auto; background: transparent; border: 1px solid var(--border); color: var(--text-main);'><i class='fa-solid fa-wand-magic-sparkles'></i> AUTO-GENERATE</button>
+          </div>
+          <div id='console-output' style='display:none;'></div>
+        </div>
+        
+        <div class='config-section'>
+          <div class='config-card'>
+            <h3>Configuration</h3>
+            <label>Target Audience</label>
+            <select class='input-field'>
+              <option>General Audience</option>
+              <option>Sci-Fi Enthusiasts</option>
+              <option>Horror Fans</option>
+            </select>
+            <label>Campaign Vibe</label>
+            <select class='input-field'>
+              <option>Dark & Gritty</option>
+              <option>Neon Cyberpunk</option>
+              <option>Minimalist Thriller</option>
+            </select>
+            <label>AI Model</label>
+            <select class='input-field'>
+              <option>Google Vertex AI (Gemma 2)</option>
+              <option>Gemma 2</option>
+            </select>
+            <button class='action-btn' id='generate-btn' style='margin-top: 1.5rem;'>GENERATE ASSETS</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id='coming-soon' class='view-content' style='display:none; height: 100%; justify-content: center; align-items: center; flex-direction: column; text-align: center;'>
+      <i class='fa-solid fa-hammer' style='font-size: 3rem; margin-bottom: 1rem; color: var(--border);'></i>
+      <h2 style='margin-bottom: 0.5rem;'>Under Construction</h2>
+      <p style='color: var(--text-muted);'>This module will be available in the next release.</p>
+    </div>
+  </main>
+</div>
+
+<div id='deployed-view' style='display: none; width: 100vw; height: 100vh; background-color: var(--bg-main); overflow-y: auto; color: var(--text-main); font-family: Manrope, sans-serif;'>
+  <header style='display: flex; justify-content: space-between; padding: 2rem 4rem; position: absolute; width: 100%; top: 0; z-index: 10; box-sizing: border-box;'>
+    <div id='promo-brand' style='font-size: 1.5rem; font-weight: 800; letter-spacing: -0.05em; color: #fff;'>NEON RUN</div>
+    <button onclick="document.getElementById('deployed-view').style.display='none'; document.getElementById('app-view').style.display='flex';" style='background: rgba(0,0,0,0.5); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 0.75rem 1.5rem; cursor: pointer; font-weight: 700; font-family: Manrope, sans-serif; backdrop-filter: blur(10px); transition: background 0.3s;'>CLOSE PREVIEW <i class='fa-solid fa-xmark' style='margin-left: 0.5rem;'></i></button>
+  </header>
+  
+  <div id='promo-hero' style="position: relative; width: 100%; height: 75vh; background: url('https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat; display: flex; align-items: flex-end; padding: 4rem; box-sizing: border-box;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, var(--bg-main) 0%, transparent 80%);"></div>
+    <div style="position: relative; z-index: 2; max-width: 800px;">
+      <h1 id='promo-title' style='font-size: 6.5rem; font-weight: 800; line-height: 0.9; margin: 0 0 1.5rem 0; letter-spacing: -0.05em; color: #fff;'>THE CHASE<br>BEGINS.</h1>
+      <p id='promo-synopsis' style='font-size: 1.25rem; color: #d4d4d8; line-height: 1.6; margin-bottom: 2.5rem; max-width: 600px;'>Rain slicks the neon-drenched streets. A rogue courier clutches a glowing hard drive to his chest. The Corpo-Sec drones are closing in. You are on your own.</p>
+      <div style='display: flex; gap: 1rem;'>
+        <button style='background: #fff; color: #000; padding: 1.25rem 3rem; font-weight: 800; font-family: Manrope, sans-serif; border: none; cursor: pointer; font-size: 1.1rem; text-transform: uppercase;'>Get Tickets</button>
+        <button style='background: rgba(255,255,255,0.1); color: #fff; padding: 1.25rem 3rem; font-weight: 800; font-family: Manrope, sans-serif; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; font-size: 1.1rem; backdrop-filter: blur(10px); text-transform: uppercase;'><i class='fa-solid fa-play' style='margin-right: 0.75rem;'></i> Watch Trailer</button>
+      </div>
+    </div>
+  </div>
+  
+  <div style='padding: 6rem 4rem; max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;'>
+    <div id='promo-lead-bg' style="background: url('https://images.unsplash.com/photo-1535295972055-1c762f4483e5?auto=format&fit=crop&w=800&q=80') center/cover; aspect-ratio: 3/4; border: 1px solid var(--border); position: relative;">
+      <div style="position: absolute; bottom: 0; width: 100%; padding: 2rem; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); box-sizing: border-box;">
+        <div style="color: #fff; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.1em; margin-bottom: 0.25rem; opacity: 0.7;">LEAD ROLE</div>
+        <div id='promo-lead-name' style="font-size: 2rem; font-weight: 800; color: #fff;">KAEL</div>
+      </div>
+    </div>
+    <div id='promo-antagonist-bg' style="background: url('https://images.unsplash.com/photo-1542931287-023b922fa89b?auto=format&fit=crop&w=800&q=80') center/cover; aspect-ratio: 3/4; border: 1px solid var(--border); position: relative;">
+      <div style="position: absolute; bottom: 0; width: 100%; padding: 2rem; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); box-sizing: border-box;">
+        <div style="color: #fff; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.1em; margin-bottom: 0.25rem; opacity: 0.7;">ANTAGONIST</div>
+        <div id='promo-antagonist-name' style="font-size: 2rem; font-weight: 800; color: #fff;">CORPO-SEC</div>
+      </div>
+    </div>
+    <div style="background: var(--bg-card); border: 1px solid var(--border); aspect-ratio: 3/4; padding: 3rem; display: flex; flex-direction: column; justify-content: center;">
+      <h3 style="font-size: 2.5rem; margin: 0 0 2rem 0; font-weight: 800; color: #fff; letter-spacing: -0.03em;">METRICS</h3>
+      <div style='display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 1rem;'>
+        <span style='color: var(--text-muted); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em;'>EXP. BOX OFFICE</span>
+        <span id='promo-boxoffice' style='font-weight: 800; color: #fff;'>$450M</span>
+      </div>
+      <div style='display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 1rem;'>
+        <span style='color: var(--text-muted); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em;'>ROTTEN TOMATOES</span>
+        <span id='promo-rt' style='font-weight: 800; color: #10b981;'>88%</span>
+      </div>
+      <div style='display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 1rem;'>
+        <span style='color: var(--text-muted); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em;'>STUDIO</span>
+        <span style='font-weight: 800; color: #fff;'>HACKATHON LABS</span>
+      </div>
+      <div style='display: flex; justify-content: space-between;'>
+        <span style='color: var(--text-muted); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em;'>RATING</span>
+        <span id='promo-rating' style='font-weight: 800; color: #fff;'>R</span>
+      </div>
+    </div>
+  </div>
+  
+  <div style='padding: 0 4rem 4rem 4rem; max-width: 1400px; margin: 0 auto;'>
+    <h3 style='font-size: 2.5rem; margin: 0 0 2rem 0; font-weight: 800; color: #fff; letter-spacing: -0.03em;'>CONCEPT KEYFRAMES</h3>
+    <div style='display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;'>
+      <div id='promo-art-1' style="background: url('https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=800&q=80') center/cover; aspect-ratio: 16/9; border: 1px solid var(--border); transition: transform 0.3s; cursor: crosshair;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'"></div>
+      <div id='promo-art-2' style="background: url('https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&w=800&q=80') center/cover; aspect-ratio: 16/9; border: 1px solid var(--border); transition: transform 0.3s; cursor: crosshair;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'"></div>
+      <div id='promo-art-3' style="background: url('https://images.unsplash.com/photo-1618557124976-926f74780517?auto=format&fit=crop&w=800&q=80') center/cover; aspect-ratio: 16/9; border: 1px solid var(--border); transition: transform 0.3s; cursor: crosshair;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'"></div>
+    </div>
+  </div>
+
+  <div style='padding: 0 4rem 6rem 4rem; max-width: 1400px; margin: 0 auto;'>
+    <div style='background: var(--bg-card); border: 1px solid var(--border); padding: 3rem; display: flex; justify-content: space-between; align-items: center; gap: 4rem;'>
+      <div style='flex: 1;'>
+        <h3 style='font-size: 2rem; margin: 0 0 0.5rem 0; font-weight: 800; color: #fff; letter-spacing: -0.03em;'>AI COMPOSED SCORE</h3>
+        <p style='color: var(--text-muted); margin: 0; font-size: 1rem; line-height: 1.5;'>Original soundtrack autonomously generated to match the script's pacing and emotional arc.</p>
+      </div>
+      <div style='flex: 2; display: flex; align-items: center; gap: 1.5rem; background: var(--bg-main); padding: 1.5rem 2rem; border: 1px solid var(--border);'>
+        <button style='background: #fff; color: #000; border: none; width: 48px; height: 48px; border-radius: 50%; font-size: 1.25rem; cursor: pointer; display: flex; justify-content: center; align-items: center;'>â–¶</button>
+        <div style='flex: 1; height: 40px; background: url("https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80") center/cover; opacity: 0.4; filter: grayscale(100%);'></div>
+        <span id='promo-audio-time' style='color: var(--text-muted); font-weight: 800; font-size: 1rem; letter-spacing: 0.05em;'>02:45</span>
+      </div>
+    </div>
+  </div>
+
+  <footer style='text-align: center; padding: 4rem; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem;'>
+    <p>Â© 2026 CineForge Studios. Generated autonomously by Google Cloud Vertex AI (Gemma 2).</p>
+  </footer>
+</div>
+
+<script src='script.js?v=13'></script>
+</body>
+</html>
